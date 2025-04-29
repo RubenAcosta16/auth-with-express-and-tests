@@ -77,7 +77,7 @@ describe("AuthRegister", () => {
     const userAuthenticatedRole = new UserRole(roles.Admin);
 
     await expect(
-      authRegister.run(
+      authRegister.run( 
         "Jane Doe",
         "john@example.com",
         "password123",
