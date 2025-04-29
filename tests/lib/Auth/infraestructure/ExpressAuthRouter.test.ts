@@ -8,8 +8,6 @@ import { errorMiddleware } from "../../../../src/lib/shared/infraestructure/midd
 import { InMemoryUserRepository } from "../../User/__mocks__/InMemoryUserRepository";
 import { UserFindAll } from "../../../../src/lib/User/application/UserFindAll";
 import { UserDelete } from "../../../../src/lib/User/application/UserDelete";
-import { authAdminMiddleware } from "../../../../src/lib/shared/infraestructure/middleware/authAdminMiddleware";
-import { roleAuthMiddleware } from "../../../../src/lib/shared/infraestructure/middleware/authMiddleware/roleAuthMiddleware";
 
 let app: express.Application;
 
@@ -248,7 +246,7 @@ describe("ExpressAuthRouter should not ", () => {
       .get("/api/v1/auth/admin")
       .set("Cookie", accessTokenCookie);
 
-      // por alguna razon los test si me devuelven el error pero en status 500 y analizando la respuesta contiene un html con el mensaje de eror que hice pero nose porque en status 500
+    // por alguna razon los test si me devuelven el error pero en status 500 y analizando la respuesta contiene un html con el mensaje de eror que hice pero nose porque en status 500
     expect(adminResponse.status).not.toBe(200);
   });
 });
