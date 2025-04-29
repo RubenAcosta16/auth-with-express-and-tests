@@ -13,7 +13,7 @@ Lo que hace especial a este proyecto es que ahora implemente unos tests para la 
 
 ## Rutas disponibles
 
-### Registro usuario normal
+### Registro usuario
 
 **POST** `/api/v1/auth/register`
 
@@ -23,42 +23,18 @@ Lo que hace especial a este proyecto es que ahora implemente unos tests para la 
 {
   "name": "Test",
   "email": "test@g.com",
-  "password": "12345678"
+  "password": "12345678",
+  "role":"User" | "Admin"
 }
 ```
 
 **Respuesta:**  
-`Status: 201 - void`
+`Status: 200 - void`
 
 ---
-
-## Registro usuario admin
-
-**POST** `/api/v1/auth/registeradmin`
-
-**Body:**
-
-```json
-{
-  "name": "Test",
-  "email": "test@g.com",
-  "password": "12345678"
-}
-```
-
-**Respuesta:**  
-`Status: 201 - void`
-
-### Por cierto solo un usuario logeado como admin puede crear otros usuarios admin, pero en el repositorio hice un usuario admin de prueba asi que puedes logearte primero enviando:
-
-```json
-{
-  "email": "john.doe@example.com",
-  "password": "$2b$10$7VZztbkDMPJID42SyZw.P.603xHcxiAt4yIF0M198Q2Y/Oo8PistK"
-}
-```
-
+Cualquier usuario ya sea autenticado o no puede crear uno de rol User, pero un Admin solo lo puede crear un usuario logeado con Admin
 ---
+
 
 ### Login
 

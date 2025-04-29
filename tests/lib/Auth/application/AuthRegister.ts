@@ -6,6 +6,8 @@ import { UserName } from "../../../../src/lib/User/domain/Props/UserName";
 import { UserPassword } from "../../../../src/lib/User/domain/Props/UserPassword";
 import { UserRole } from "../../../../src/lib/User/domain/Props/UserRole";
 import { UserRepository } from "../../../../src/lib/User/domain/UserRepository";
+import { AuthInvalidCredentialsError } from "../../../../src/lib/Auth/domain/errors";
+import { roles } from "../../../../src/lib/User/UserTypes";
 
 describe("AuthRegister", () => {
   let userRepository: UserRepository;
@@ -32,8 +34,9 @@ describe("AuthRegister", () => {
     const email = "john@example.com";
     const password = "password123";
     const role = "User";
+    const userAuthenticatedRole = new UserRole(roles.Admin);
 
-    await authRegister.run(name, email, password, role);
+    await authRegister.run(name, email, password, role, userAuthenticatedRole);
 
     expect(authRepository.generateId).toHaveBeenCalled();
     expect(authRepository.hashPassword).toHaveBeenCalledWith(password);
@@ -53,8 +56,16 @@ describe("AuthRegister", () => {
       .fn()
       .mockRejectedValue(new Error("User creation failed"));
 
+    const userAuthenticatedRole = new UserRole(roles.Admin);
+
     await expect(
-      authRegister.run("Jane Doe", "jane@example.com", "password123", "User")
+      authRegister.run(
+        "Jane Doe",
+        "jane@example.com",
+        "password123",
+        "User",
+        userAuthenticatedRole
+      )
     ).rejects.toThrow("User creation failed");
   });
 
@@ -63,8 +74,32 @@ describe("AuthRegister", () => {
       .fn()
       .mockResolvedValue(new UserEmail("john@example.com"));
 
+    const userAuthenticatedRole = new UserRole(roles.Admin);
+
     await expect(
-      authRegister.run("Jane Doe", "john@example.com", "password123", "User")
+      authRegister.run(
+        "Jane Doe",
+        "john@example.com",
+        "password123",
+        "User",
+        userAuthenticatedRole
+      )
     ).rejects.toThrow("Email already exists");
+  });
+
+  it("should throw an error if a non-admin tries to create an admin", async () => {
+    const name = "Admin User";
+    const email = "admin@example.com";
+    const password = "password123";
+    const role = roles.Admin;
+    const userAuthenticatedRole = new UserRole(roles.User); // Usuario no administrador
+
+    await expect(
+      authRegister.run(name, email, password, role, userAuthenticatedRole)
+    ).rejects.toThrow(AuthInvalidCredentialsError);
+
+    expect(authRepository.generateId).not.toHaveBeenCalled();
+    expect(authRepository.hashPassword).not.toHaveBeenCalled();
+    expect(userRepository.create).not.toHaveBeenCalled();
   });
 });

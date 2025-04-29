@@ -9,7 +9,7 @@ export const errorMiddleware = (
   res: Response,
   next: NextFunction
 ) => {
-  if (err instanceof UserError || err instanceof AuthInvalidCredentialsError) {
+  if (err instanceof AuthInvalidCredentialsError || err instanceof UserError) {
     return res.status(400).json({
       message: err.message,
     });

@@ -3,20 +3,27 @@ import { NextFunction, Request, Response } from "express";
 // import { UserNotFoundError } from "../domain/UserNotFoundError";
 import { ServiceContainer } from "../../../shared/ServiceContainer";
 import { AuthInvalidCredentialsError } from "../../domain/errors";
-import { roles } from "../../../User/UserTypes";
+// import { roles } from "../../../User/UserTypes";
 import { login, register } from "./ExpressAuthProps";
+import { UserRole } from "../../../User/domain/Props/UserRole";
 // import { roles } from "../../UserTypes";
 
 export class ExpressAuthController {
   register = async (req: Request, res: Response, next: NextFunction) => {
-    const { name, password, email }: register = req.body;
+    let userAuthenticatedRole: UserRole = new UserRole("User");
+    if (req.user) {
+      userAuthenticatedRole = req.user.role;
+    }
+
+    const { name, password, email, role }: register = req.body;
 
     try {
       await ServiceContainer.auth.register.run(
         name,
         email,
         password,
-        roles.User
+        role,
+        userAuthenticatedRole
       );
 
       res.status(200).send();
@@ -25,22 +32,22 @@ export class ExpressAuthController {
     }
   };
 
-  registerAdmin = async (req: Request, res: Response, next: NextFunction) => {
-    const { name, password, email }: register = req.body;
+  // registerAdmin = async (req: Request, res: Response, next: NextFunction) => {
+  //   const { name, password, email }: register = req.body;
 
-    try {
-      await ServiceContainer.auth.register.run(
-        name,
-        email,
-        password,
-        roles.Admin
-      );
+  //   try {
+  //     await ServiceContainer.auth.register.run(
+  //       name,
+  //       email,
+  //       password,
+  //       roles.Admin
+  //     );
 
-      res.status(200).send();
-    } catch (error) {
-      next(error);
-    }
-  };
+  //     res.status(200).send();
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // };
 
   login = async (req: Request, res: Response, next: NextFunction) => {
     const { password, email }: login = req.body;

@@ -7,6 +7,8 @@ import { UserEmail } from "../../User/domain/Props/UserEmail";
 import { UserPassword } from "../../User/domain/Props/UserPassword";
 import { UserRole } from "../../User/domain/Props/UserRole";
 import { UserRepository } from "../../User/domain/UserRepository";
+import { roles } from "../../User/UserTypes";
+import { AuthInvalidCredentialsError } from "../domain/errors";
 // import { roles } from 'src/lib/User/UserTypes';
 
 export class AuthRegister {
@@ -20,8 +22,15 @@ export class AuthRegister {
     name: string,
     email: string,
     password: string,
-    role: string
+    role: string,
+    userAuthenticatedRole: UserRole
   ): Promise<void> {
+    if (userAuthenticatedRole.value !== roles.Admin && role == roles.Admin) {
+      throw new AuthInvalidCredentialsError(
+        "Only admins can create other admins"
+      );
+    }
+
     const userApplication = new UserCreate(this.userRepository);
 
     const id = this.authRepository.generateId();
