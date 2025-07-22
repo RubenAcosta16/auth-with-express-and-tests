@@ -34,21 +34,24 @@ export class AuthRegister {
     const userApplication = new UserCreate(this.userRepository);
 
     const id = this.authRepository.generateId();
-    const hashedPassword = await this.authRepository.hashPassword(password);
 
     const newUser = new User(
       new UserId(id),
       new UserName(name),
       new UserEmail(email),
-      new UserPassword(hashedPassword),
+      new UserPassword(password),
       new UserRole(role)
+    );
+
+    const hashedPassword = await this.authRepository.hashPassword(
+      newUser.password.value
     );
 
     return await userApplication.run(
       newUser.id.value,
       newUser.name.value,
       newUser.email.value,
-      newUser.password.value,
+      hashedPassword,
       newUser.role.value
     );
   }

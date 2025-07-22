@@ -14,7 +14,7 @@ export class UserRole {
       throw new UserError("Role is not valid");
     }
     if (!(this.value == "User" || this.value == "Admin")) {
-      throw new UserError("Invalid role");
+      throw new UserError("Invalid role, it can be only 'User' or 'Admin'");
     }
   }
 }
