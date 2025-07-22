@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { AuthInvalidCredentialsError } from "../../../Auth/domain/errors";
+import { AuthInvalidCredentialsError } from "../../domain/errors";
 import { roles } from "../../../User/UserTypes";
 import { UserRole } from "../../../User/domain/Props/UserRole";
 

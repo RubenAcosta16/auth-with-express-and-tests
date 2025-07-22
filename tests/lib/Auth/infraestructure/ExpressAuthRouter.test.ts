@@ -3,7 +3,7 @@ import express from "express";
 import { UserStub } from "../../User/domain/UserStub";
 import { ExpressAuthRouter } from "../../../../src/lib/Auth/infraestructure/Expressjs/ExpressAuthRouter";
 import cookieParser from "cookie-parser";
-import { authMiddleware } from "../../../../src/lib/shared/infraestructure/middleware/authMiddleware/authMiddleware";
+import { authMiddleware } from "../../../../src/lib/Auth/infraestructure/middleware/authMiddleware/authMiddleware";
 import { errorMiddleware } from "../../../../src/lib/shared/infraestructure/middleware/errorMiddleware";
 import { InMemoryUserRepository } from "../../User/__mocks__/InMemoryUserRepository";
 import { UserFindAll } from "../../../../src/lib/User/application/UserFindAll";

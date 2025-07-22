@@ -2,9 +2,9 @@ import { Router } from "express";
 
 import { ExpressAuthController } from "./ExpressAuthController";
 
-import { authAdminMiddleware } from "../../../shared/infraestructure/middleware/authAdminMiddleware";
-import { roleAuthMiddleware } from "../../../shared/infraestructure/middleware/authMiddleware/roleAuthMiddleware";
-import { authMiddleware } from "../../../shared/infraestructure/middleware/authMiddleware/authMiddleware";
+import { authAdminMiddleware } from "../middleware/authAdminMiddleware";
+import { roleAuthMiddleware } from "../middleware/authMiddleware/roleAuthMiddleware";
+import { authMiddleware } from "../middleware/authMiddleware/authMiddleware";
 
 const controller = new ExpressAuthController();
 const ExpressAuthRouter = Router();

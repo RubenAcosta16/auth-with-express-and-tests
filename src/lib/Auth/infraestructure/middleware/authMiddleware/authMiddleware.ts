@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { AuthInvalidCredentialsError } from "../../../../Auth/domain/errors";
+import { AuthInvalidCredentialsError } from "../../../domain/errors";
 import { verifyToken } from "./utils";
 
 export const authMiddleware = async (
